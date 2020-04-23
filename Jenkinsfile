@@ -43,9 +43,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "udacity-cap"]){
 
-                docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}
+                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
 
-                docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}
+                sh "docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
             }
         }
       }
