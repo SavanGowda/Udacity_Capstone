@@ -1,10 +1,10 @@
 pipeline{
   agent any
 
-  parameters([
+  parameters{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS'),
         string(defaultValue: "udacitycap", description: 'Name of the ECR registry', name: 'REPO')
-	])
+	}
 
   stages{
 
