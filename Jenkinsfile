@@ -64,7 +64,7 @@ pipeline{
 
     stage('Create Stack and Deploy to K8s'){
       steps{
-            sh 'echo "Uploading to ECR Complete"'
+            sh 'echo "Uploading to ECR Complete!"'
         }
       }
     }
