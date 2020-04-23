@@ -42,10 +42,9 @@ pipeline{
       steps {
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "udacity-cap"]){
-                #Tag the build with BUILD_NUMBER version
+
                 docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}
 
-                #Publish image
                 docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}
             }
         }
