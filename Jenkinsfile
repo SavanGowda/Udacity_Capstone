@@ -37,7 +37,8 @@ pipeline{
         sh '''
             REG_ADDRESS="981422959347.dkr.ecr.us-west-2.amazonaws.com"
             REPO="udacitycap"
-            sh 'aws ecr get-login --no-include-email --region us-west-2'
+            #sh 'aws ecr get-login --no-include-email --region us-west-2'
+            sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
 
             #aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap
 
