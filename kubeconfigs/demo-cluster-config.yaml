@@ -1,0 +1,29 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01EUXlOREF3TVRZMU9Gb1hEVE13TURReU1qQXdNVFkxT0Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTDQyCnd6RUlwdHNnaHNsNE9SSnpXMG9rYmpVREVJMlZDRUUyeWpuOTdjUTVqc1IxdHphZG5yNlJrc1lXT0FKRFg3aHkKOWJCZ3Qzc3didmlHcGM0R0N5aGtzYlZObGF4RXNmeUJMTXd6Y3h5a2RxMkJMOWxsVW1yMHhUYmVaZUQ5c0lqbApEUDhFSHB2ekpDb2FUcEhKZlhWNUhpamdLNWk5SkR3WVQ1TFNNTHVNYWpCU3VZSGFPV2dPQXJ0bGs4bEZubExrClpMQVJLVTBSTE1ocER5elkrdFVFVWZYSHdKT2JQUmdQL3FvRW9RUjZJaDM0ME1abEFOWFFWQ284cjJrLzhQRzQKQ3hFNnJ0eitjOUZyL1dsaStKVmRpRllNZnpwUTRUdU96eVBhMDRsWU1rZmhUTDY5dlFSV0dnaDF5NmRsNnZwdwo2Q1dJamRxZlQveXJtTldSUTVVQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFGWUpQdjVmZzBXY3d6ajF4a1h1Um1xR2lhekEKVWJhdklod1BnZ04yTVZhQ0x5bWhXSHg0dUVuLzVmRzN4THhBeWkwQjFTNUVRRUhscEs5Snp6NXo5MFFQNlFyMwpSNmJ2ZHZxU1QrWURnTVNiR0E2VWptQ2hVd3pWZWp6REpLbHhwOVp0UDMyY0xQNG1OcWZndzFaOEJzKzBqSFRkClVTZ3dLeDhEV2d1OEQ4Tmp1Wi9SYW1HaWF0NngvNzRxaFdPYUtKeWYvSUdpdEtLYzRjMC9yVVA4T0NMZ1V5cjgKd0d5ZnQ3ZUhkNkFMVm1zbnZtRFhCem9DU2w5TVR2T2Q4WEM2Y1FDZ2xTL2x4SXo0ZTZSVytET0RQdzlYNThtRgp0NzZYYWRzeVJ4NEJSOStSdkY5T2pmS2IxS1RqdEtyVFllM1Zhc2laSGtTajBvSUF0NEF5ZllYS2RiRT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    server: https://6E035F7B639A20D43EEC32E5C53372AC.gr7.us-west-2.eks.amazonaws.com
+  name: my-demo-cluster.us-west-2.eksctl.io
+contexts:
+- context:
+    cluster: my-demo-cluster.us-west-2.eksctl.io
+    user: savan@my-demo-cluster.us-west-2.eksctl.io
+  name: savan@my-demo-cluster.us-west-2.eksctl.io
+current-context: savan@my-demo-cluster.us-west-2.eksctl.io
+kind: Config
+preferences: {}
+users:
+- name: savan@my-demo-cluster.us-west-2.eksctl.io
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      args:
+      - token
+      - -i
+      - my-demo-cluster
+      command: aws-iam-authenticator
+      env:
+      - name: AWS_STS_REGIONAL_ENDPOINTS
+        value: regional
+      - name: AWS_DEFAULT_REGION
+        value: us-west-2
