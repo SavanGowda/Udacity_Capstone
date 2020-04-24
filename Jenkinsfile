@@ -66,7 +66,7 @@ pipeline{
 
     stage('Make Predictions'){
       steps{
-            sh './make_predictions.sh'
+            sh './make_prediction.sh'
         }
       }
 
