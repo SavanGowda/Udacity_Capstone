@@ -55,8 +55,8 @@ pipeline{
 
     stage('Create Stack and Deploy to K8s'){
       steps{
-            sh 'eksctl create cluster -f $HOME/main.yaml --kubeconfig=$HOME/kubeconfigs/green-cluster-config.yaml'
-            sh 'export KUBECONFIG=$HOME/kubeconfigs/green-cluster-config.yaml'
+            sh 'eksctl create cluster -f main.yaml --kubeconfig=kubeconfigs/green-cluster-config.yaml'
+            sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
             sh 'kubectl get all --all-namespaces'
             sh 'kubectl apply -f deploy.yaml'
             sh 'kubectl apply -f k8s-svc.yaml'
