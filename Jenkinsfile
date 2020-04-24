@@ -30,7 +30,7 @@ pipeline{
       steps{
         sh '''
             cd ${WORKSPACE}
-            REPO="udacitycap"
+            REPO="udacitycap"s
 
             #Build container images using Dockerfile
             docker build --no-cache -t ${REPO}:${BUILD_NUMBER} .
