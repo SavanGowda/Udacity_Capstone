@@ -55,7 +55,29 @@ pipeline{
 
     stage('Create Stack and Deploy to K8s'){
       steps{
-            sh 'echo "Uploading to ECR Complete!"'
+            #sh 'echo "Uploading to ECR Complete!"'
+            sh 'eksctl create cluster -f $HOME/main.yaml --kubeconfig=$HOME/kubeconfigs/green-cluster-config.yaml'
+            sh 'export KUBECONFIG=$HOME/kubeconfigs/green-cluster-config.yaml'
+            sh 'kubectl get all --all-namespaces'
+            sh 'kubectl apply -f deploy.yaml'
+            sh 'kubectl apply -f k8s-svc.yaml'
+            sh 'kubectl get svc'
+        }
+      }
+
+    stage('Make Predictions'){
+      steps{
+            sh 'make_predictions.sh'
+        }
+      }
+
+    stage('Delete the Stack'){
+      steps{
+            sh '''
+            kubectl delete -f deploy.yaml
+            kubectl delete -f k8s-svc.yaml
+            eksctl delete cluster --name=green-cluster
+            '''
         }
       }
     }

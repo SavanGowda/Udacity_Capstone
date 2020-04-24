@@ -1,13 +1,12 @@
-
 ---
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: my-demo-cluster
+  name: green-cluster
   region: us-west-2
 nodeGroups:
-  - name: my-demo-workers
-    instanceType: t3.medium
-    desiredCapacity: 4
+  - name: green-workers
+    instanceType: t2.micro
+    desiredCapacity: 3
     minSize: 1
-    maxSize: 4
+    maxSize: 3

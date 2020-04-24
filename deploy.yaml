@@ -1,21 +1,20 @@
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-kubernetes
+  name: udacity-cap
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: hello-kubernetes
+      app: udacity-cap
   template:
     metadata:
       labels:
-        app: hello-kubernetes
+        app: udacity-cap
     spec:
       containers:
-      - name: hello-kubernetes
-        image: paulbouwer/hello-kubernetes:1.5
+      - name: udacity-cap
+        image: 981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap
         ports:
         - containerPort: 8080
