@@ -55,7 +55,6 @@ pipeline{
 
     stage('Create Stack and Deploy to K8s'){
       steps{
-            #sh 'echo "Uploading to ECR Complete!"'
             sh 'eksctl create cluster -f $HOME/main.yaml --kubeconfig=$HOME/kubeconfigs/green-cluster-config.yaml'
             sh 'export KUBECONFIG=$HOME/kubeconfigs/green-cluster-config.yaml'
             sh 'kubectl get all --all-namespaces'
