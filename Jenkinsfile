@@ -63,20 +63,18 @@ pipeline{
             sh 'kubectl get svc'
 
 
-            timeout(time: 5, unit: 'MINUTES') {
-                    retry(5) {
+            sleep(time: 10, unit: 'MINUTES') {
                         sh 'kubectl describe services udacity-cap'
                         sh 'kubectl get pods --selector="app=udacity-cap" --output=wide'
-                    }
             }
         }
       }
 
     stage('Make Predictions'){
       steps{
-            timeout(time: 5, unit: 'MINUTES') {
+            sleep(time: 10, unit: 'MINUTES') {
               sh './make_prediction.sh'
-            }
+          }
         }
       }
     }
