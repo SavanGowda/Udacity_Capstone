@@ -61,6 +61,9 @@ pipeline{
             sh 'kubectl apply -f deploy.yaml'
             sh 'kubectl apply -f k8s-svc.yaml'
             sh 'kubectl get svc'
+            sh 'kubectl expose deployment udacity-cap --type=NodePort --name=green-service'
+            sh 'kubectl describe services green-service'
+            sh 'kubectl get pods --selector="app=udacity-cap" --output=wide'
         }
       }
 

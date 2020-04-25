@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: udacity-cap
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: udacity-cap
@@ -17,4 +17,4 @@ spec:
       - name: udacity-cap
         image: 981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
