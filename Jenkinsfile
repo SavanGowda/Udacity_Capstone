@@ -62,8 +62,14 @@ pipeline{
             sh 'kubectl apply -f k8s-svc.yaml'
             sh 'kubectl get svc'
             sh 'kubectl expose deployment udacity-cap --type=NodePort --name=green-service'
-            sh 'kubectl describe services green-service'
-            sh 'kubectl get pods --selector="app=udacity-cap" --output=wide'
+
+
+            timeout(time: 5, unit: 'MINUTES') {
+                    retry(5) {
+                        sh 'kubectl describe services green-service'
+                        sh 'kubectl get pods --selector="app=udacity-cap" --output=wide'
+                    }
+            }
         }
       }
 
@@ -72,15 +78,15 @@ pipeline{
             sh './make_prediction.sh'
         }
       }
-
-    stage('Delete the Stack'){
-      steps{
-            sh '''
-            kubectl delete -f deploy.yaml
-            kubectl delete -f k8s-svc.yaml
-            eksctl delete cluster --name=green-cluster
-            '''
-        }
-      }
     }
+}
+post{
+  always{
+    echo 'Deleting the Stack'
+    sh '''
+    kubectl delete -f deploy.yaml
+    kubectl delete -f k8s-svc.yaml
+    eksctl delete cluster --name=green-cluster
+    '''
+  }
 }
