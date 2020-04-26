@@ -15,6 +15,9 @@ spec:
     spec:
       containers:
       - name: udacity-cap
-        image: 981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap
+        image: {{REG_ADDRESS}}/{{REPO}}:{{BUILD_NUMBER}}
         ports:
-        - containerPort: 8000
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"

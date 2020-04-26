@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-PORT=80
-echo "Port: $PORT"
-
 # POST method predict
 curl -d '{
    "CHAS":{
@@ -25,4 +22,4 @@ curl -d '{
    }
 }'\
      -H "Content-Type: application/json" \
-     -X POST http://localhost:$PORT/predict
+     -X POST http://ae57be427f3c04a8f97526d216a2531b-1144013958.us-west-2.elb.amazonaws.com/predict
