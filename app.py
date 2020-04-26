@@ -120,7 +120,7 @@ def get_dominant_color(image):
 	"""returns the dominate color among Blue, Green and Reds in the image"""
 	blue, green, red = cv2.split(image)
 	blue, green, red = np.sum(blue), np.sum(green), np.sum(red)
-	color_sums = [blue, green, red]az
+	color_sums = [blue, green, red]
 	color_values = {"0": "Blue", "1":"Green", "2": "Red"}
 	return color_values[str(np.argmax(color_sums))]
 
