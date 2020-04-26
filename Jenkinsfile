@@ -62,9 +62,9 @@ pipeline{
 
             //cat app-deployment.yaml | sed "s/{{BITBUCKET_COMMIT}}/$BITBUCKET_COMMIT/g" | kubectl apply -f -
 
-            sh 'cat deploy.yaml | sed "s/{{REG_ADDRESS}}/$REG_ADDRESS/g"'
-            sh 'cat deploy.yaml | sed "s/{{REPO}}/$REPO/g"'
-            sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g"| kubectl apply -f deploy.yaml'
+            sh 'cat deploy.yaml | sed "s/{{REG_ADDRESS}}/${REG_ADDRESS}/g" | sed " s/{{BUILD_NUMBER}}/${BUILD_NUMBER}/g" | sed " s/{{REPO}}/${REPO}/g" | kubectl apply -f deploy.yaml'
+            //sh 'cat deploy.yaml | sed "s/{{REPO}}/$REPO/g"'
+            //sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g"| kubectl apply -f deploy.yaml'
             //sh 'cat deploy.yaml | sed "s/{{REPO}}/$REPO/g" | kubectl apply -f deploy.yaml'
             //sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" | kubectl apply -f deploy.yaml'
 
