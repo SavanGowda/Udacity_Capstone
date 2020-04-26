@@ -12,7 +12,7 @@ pipeline{
     stage('Install Dependencies') {
       steps{
             sh """
-              . venv/bin/activate
+              . .venv/bin/activate
               make install
             """
       }
