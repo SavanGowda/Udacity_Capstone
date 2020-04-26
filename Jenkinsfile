@@ -25,7 +25,7 @@ pipeline{
               hadolint Dockerfile
 
               #Lint Python file
-              pylint --disable=R,C,W1203,W1202 app.py
+              pylint --disable=R,C,W1203,W1202,W0312,E1101 app.py
             '''
       }
     }
