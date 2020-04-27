@@ -66,7 +66,7 @@ pipeline{
       environment {
          JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
       }
-      steps
+      steps{
             sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
             sh 'eksctl create cluster -f main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml'
