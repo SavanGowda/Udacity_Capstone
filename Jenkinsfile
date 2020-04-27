@@ -1,6 +1,10 @@
 pipeline{
   agent any
 
+  environment {
+     JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
+  }
+
   parameters{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
         string(defaultValue: "udacitycap", description: 'Name of the ECR registry', name: 'REPO')
@@ -8,13 +12,17 @@ pipeline{
 	}
 
   stages{
-
     stage('Install Dependencies') {
+      environment {
+        JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
+        }
       steps{
             sh """
               . .venv/bin/activate
               make install
             """
+            echo "PATH=${JENKINS_PATH}"
+            sh 'echo "JP=$JENKINS_PATH"'
       }
     }
 
@@ -55,10 +63,10 @@ pipeline{
       }
 
     stage('Create Stack and Deploy to K8s'){
-      steps{
       environment {
-           JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
-           }
+         JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
+      }
+      steps{
             sh 'eksctl create cluster -f main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml'
             withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:{BUILD_NUMBER}"]){
               //sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
