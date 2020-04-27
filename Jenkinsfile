@@ -74,7 +74,7 @@ pipeline{
               //sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
               sleep 30
               sh 'kubectl get all --all-namespaces'
-              sh "sed -i 's|IMAGE|${IMAGE}|g' deploy.yaml"
+              sh "sed -i '' 's|IMAGE|${IMAGE}|g' deploy.yaml"
               sh "kubectl apply -f deploy.yaml"
 
               //cat app-deployment.yaml | sed "s/{{BITBUCKET_COMMIT}}/$BITBUCKET_COMMIT/g" | kubectl apply -f -
