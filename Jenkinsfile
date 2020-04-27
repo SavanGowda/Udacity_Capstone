@@ -56,9 +56,12 @@ pipeline{
 
     stage('Create Stack and Deploy to K8s'){
       steps{
-            sh 'eksctl create cluster -f main.yaml'
-            withEnv(["KUBECONFIG=${JENKINS_HOME}/.kube/config", "IMAGE=${REG_ADDRESS}/${REPO}:{BUILD_NUMBER}"]){
-              //sh 'export env.KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
+      environment {
+           JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
+           }
+            sh 'eksctl create cluster -f main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml'
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:{BUILD_NUMBER}"]){
+              //sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
               sleep 30
               sh 'kubectl get all --all-namespaces'
               sh "sed -i 's|IMAGE|${IMAGE}|g' deploy.yaml"
