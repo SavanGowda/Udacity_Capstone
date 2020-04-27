@@ -70,11 +70,14 @@ pipeline{
             sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
             sh 'eksctl create cluster -f main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml'
-            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:{BUILD_NUMBER}"]){
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"]){
+
               //sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
               sleep 30
               sh 'kubectl get all --all-namespaces'
+
               sh "sed -i '' 's|IMAGE|${IMAGE}|g' deploy.yaml"
+
               sh "kubectl apply -f deploy.yaml"
 
               //cat app-deployment.yaml | sed "s/{{BITBUCKET_COMMIT}}/$BITBUCKET_COMMIT/g" | kubectl apply -f -
@@ -83,10 +86,11 @@ pipeline{
               //sh 'cat deploy.yaml | sed "s/{{REPO}}/$REPO/g"'
               //sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g"| kubectl apply -f deploy.yaml'
               //sh 'cat deploy.yaml | sed "s/{{REPO}}/$REPO/g" | kubectl apply -f deploy.yaml'
-              sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" | kubectl apply -f deploy.yaml'
+              //sh 'cat deploy.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" | kubectl apply -f deploy.yaml'
 
               echo "Creating kubernetes resources"
               sh 'sleep 180'
+              sh 'kubectl get pods'
 
               sh 'kubectl apply -f k8s-svc.yaml'
               sh 'kubectl get svc'
