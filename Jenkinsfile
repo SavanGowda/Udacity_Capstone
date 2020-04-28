@@ -90,20 +90,6 @@ pipeline{
         }
       }
 
-
-      def userInput
-        try {
-    	   timeout(time: 60, unit: 'SECONDS') {
-
-         userInput = input message: 'Deploy green service', parameters: [booleanParam(defaultValue: false, description: 'Ticking this box will do a deployment green service', name: 'DEPLOY_GREEN')]}
-        }
-        catch (err) {
-          def user = err.getCauses()[0].getUser()
-          echo "Aborted by:\n ${user}"
-          currentBuild.result = "SUCCESS"
-          return
-        }
-
         stage('Deploy Green Service'){
           environment {
              JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
@@ -140,3 +126,17 @@ pipeline{
         }
     }
 }
+
+def userInput() {
+  try {
+   timeout(time: 60, unit: 'SECONDS') {
+
+   userInput = input message: 'Deploy green service', parameters: [booleanParam(defaultValue: false, description: 'Ticking this box will do a deployment green service', name: 'DEPLOY_GREEN')]}
+  }
+  catch (err) {
+    def user = err.getCauses()[0].getUser()
+    echo "Aborted by:\n ${user}"
+    currentBuild.result = "SUCCESS"
+    return
+    }
+  }
