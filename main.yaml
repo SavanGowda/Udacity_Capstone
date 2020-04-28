@@ -5,7 +5,13 @@ metadata:
   name: udacity-cluster
   region: us-west-2
 nodeGroups:
-  - name: udacity-workers
+  - name: blue-workers
+    instanceType: t2.micro
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 2
+nodeGroups:
+  - name: green-workers
     instanceType: t2.micro
     desiredCapacity: 2
     minSize: 1
