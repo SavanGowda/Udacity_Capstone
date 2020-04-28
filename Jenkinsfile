@@ -9,6 +9,7 @@ pipeline{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
         string(defaultValue: "udacitycap-blue", description: 'Name of the ECR registry', name: 'REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
+        tring(defaultValue: "blue", description: 'Add the blue tag', name: 'TAG')
 	}
 
   stages{
@@ -39,7 +40,7 @@ pipeline{
       steps{
         sh '''
             cd ${WORKSPACE}
-            REPO="udacitycap-blue"
+            #REPO="udacitycap-blue"
 
             #Build container images using Dockerfile
             docker build --no-cache -t ${REPO}:${BUILD_NUMBER} .
@@ -52,9 +53,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap-blue",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${TAG}"
 
-                sh "docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker push ${REG_ADDRESS}/${REPO}:${TAG}"
             }
         }
       }
@@ -67,7 +68,7 @@ pipeline{
             sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
             sh 'eksctl create cluster -f main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml'
-            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"]){
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:${TAG}"]){
 
               //sh 'export KUBECONFIG=kubeconfigs/green-cluster-config.yaml'
               sleep 30
