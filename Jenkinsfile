@@ -42,7 +42,7 @@ pipeline{
             #REPO="udacitycap"
 
             #Build container images using Dockerfile
-            docker build --no-cache -t ${REPO}:${TAG} .
+            docker build --no-cache -t ${REPO}:${BUILD_NUMBER} .
             '''
         }
       }
@@ -52,7 +52,7 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${REPO}:${TAG} ${REG_ADDRESS}/${REPO}:${TAG}"
+                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${TAG}"
 
                 sh "docker push ${REG_ADDRESS}/${REPO}:${TAG}"
             }
