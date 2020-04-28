@@ -14,8 +14,7 @@ spec:
         app: udacity-cap-green
     spec:
       containers:
-      - name: udacity-cap-green
-        image: 981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap:34
+      - name: IMAGE
         ports:
         - containerPort: 80
         env:
