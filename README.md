@@ -55,7 +55,7 @@ ________________________________________________________________________________
 * I have created two other branches of the project in order to create two versions of the webapp that I want to deploy
 * *blue_branch* creates and pushes the blue version of the webapp
   ![Blue Webapp](images/udacap_blue_page.png)
-* *green_branch* creates and pushes the blue version of the webapp
+* *green_branch* creates and pushes the green version of the webapp
   ![Green Webapp](images/udacap_green_page.png)
 * *master*
   - The Jenkinsfile in the *master* builds and pushes the blue version of the webapp by default
