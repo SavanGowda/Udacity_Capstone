@@ -7,8 +7,8 @@ pipeline{
 
   parameters{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
-        string(defaultValue: "udacitycap-blue", description: 'Name of the ECR registry', name: 'BLUE_REPO')
-        string(defaultValue: "udacitycap-green", description: 'Name of the ECR registry', name: 'GREEN_REPO')
+        string(defaultValue: "udacitycap-blue", description: 'Name of the blue ECR registry', name: 'BLUE_REPO')
+        string(defaultValue: "udacitycap-green", description: 'Name of the green ECR registry', name: 'GREEN_REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
 	}
 
@@ -39,10 +39,10 @@ pipeline{
       steps{
         sh '''
             cd ${WORKSPACE}
-            REPO="udacitycap"
+            //REPO="udacitycap"
 
             #Build container images using Dockerfile
-            docker build --no-cache -t ${REPO}:${BUILD_NUMBER} .
+            docker build --no-cache -t ${BLUE_REPO}:${BUILD_NUMBER} .
             '''
         }
       }
@@ -52,9 +52,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker tag ${BLUE_REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${BLUE_REPO}:${BUILD_NUMBER}"
 
-                sh "docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker push ${REG_ADDRESS}/${BLUE_REPO}:${BUILD_NUMBER}"
             }
         }
       }
