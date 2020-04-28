@@ -9,6 +9,7 @@ pipeline{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
         string(defaultValue: "udacitycap-green", description: 'Name of the ECR registry', name: 'REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
+        string(defaultValue: "green", description: 'Add the green tag', name: 'TAG')
 	}
 
   stages{
@@ -38,10 +39,10 @@ pipeline{
       steps{
         sh '''
             cd ${WORKSPACE}
-            REPO="udacitycap"
+            #REPO="udacitycap"
 
             #Build container images using Dockerfile
-            docker build --no-cache -t ${REPO}:${BUILD_NUMBER} .
+            docker build --no-cache -t ${REPO}:${TAG} .
             '''
         }
       }
@@ -51,9 +52,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker tag ${REPO}:${TAG} ${REG_ADDRESS}/${REPO}:${TAG}"
 
-                sh "docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
+                sh "docker push ${REG_ADDRESS}/${REPO}:${TAG}"
             }
         }
       }
@@ -63,7 +64,7 @@ pipeline{
          JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
       }
       steps{
-            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"]){
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/green-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${REPO}:${TAG}"]){
 
               sh 'eksctl create nodegroup -f main.yaml'
 
