@@ -9,7 +9,6 @@ pipeline{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
         string(defaultValue: "udacitycap-blue", description: 'Name of the ECR registry', name: 'REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
-        string(defaultValue: "blue", description: 'container tag', name: 'TAG')
 	}
 
   stages{
@@ -53,9 +52,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap-blue",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${TAG}"
+                sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
 
-                sh "docker push ${REG_ADDRESS}/${REPO}:${TAG}"
+                sh "docker push ${REG_ADDRESS}/${REPO}:${BUILD_NUMBER}"
             }
         }
       }
