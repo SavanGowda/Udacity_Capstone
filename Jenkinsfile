@@ -9,7 +9,7 @@ pipeline{
         string(defaultValue: "981422959347.dkr.ecr.us-west-2.amazonaws.com", description: 'AWS Account Number?', name: 'REG_ADDRESS')
         string(defaultValue: "udacitycap-blue", description: 'Name of the ECR registry', name: 'REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
-        tring(defaultValue: "blue", description: 'Add the blue tag', name: 'TAG')
+        string(defaultValue: "blue", description: 'Add the blue tag', name: 'TAG')
 	}
 
   stages{
