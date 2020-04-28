@@ -54,9 +54,9 @@ ________________________________________________________________________________
 
 * I have created two other branches of the project in order to create two versions of the webapp that I want to deploy
 * *blue_branch* creates and pushes the blue version of the webapp
-  ![alt text](https://github.com/SavanGowda/Udacity_Capstone/tree/master/images/udacap_blue_page.png)
+  ![Blue Webapp](images/udacap_blue_page.png)
 * *green_branch* creates and pushes the blue version of the webapp
-  ![alt text](https://github.com/SavanGowda/Udacity_Capstone/tree/master/images/udacap_green_page.png)
+  ![Green Webapp](images/udacap_green_page.png)
 * *master*
   - The Jenkinsfile in the *master* builds and pushes the blue version of the webapp by default
   - The Jenkinsfile further contains a stage to create the Kubernetes cluster with the help of eksctl and deploy the blue-nodegroups and the service (LoadBalancer) and deploys the blue version of the webapp (which could be accessed through the LoadBalancer DNS)
