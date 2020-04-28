@@ -10,9 +10,3 @@ nodeGroups:
     desiredCapacity: 2
     minSize: 1
     maxSize: 2
-
-  - name: green-workers
-    instanceType: t2.micro
-    desiredCapacity: 2
-    minSize: 1
-    maxSize: 2
