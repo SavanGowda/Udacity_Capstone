@@ -1,0 +1,12 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: bluegreen-cluster
+  region: us-west-2
+nodeGroups:
+  - name: green-workers
+    instanceType: t2.micro
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 2
