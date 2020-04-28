@@ -51,7 +51,7 @@ pipeline{
     stage('Pushing_Image_To_ECR') {
       steps {
 
-            withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap-blue",credentialsId: "ecr:us-west-2:ecr-credentials"]){
+            withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
                 sh "docker tag ${REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${REPO}:${TAG}"
 
