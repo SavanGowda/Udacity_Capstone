@@ -10,6 +10,8 @@ pipeline{
         string(defaultValue: "udacitycap-blue", description: 'Name of the blue ECR registry', name: 'BLUE_REPO')
         string(defaultValue: "udacitycap-green", description: 'Name of the green ECR registry', name: 'GREEN_REPO')
         string(defaultValue: "us-west-2", description: 'AWS Region', name: 'REGION')
+        string(defaultValue: "blue", description: 'AWS Region', name: 'BLUE_TAG')
+        string(defaultValue: "green", description: 'AWS Region', name: 'GREEN_TAG')
 	}
 
   stages{
@@ -52,9 +54,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${BLUE_REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${BLUE_REPO}:${BUILD_NUMBER}"
+                sh "docker tag ${BLUE_REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"
 
-                sh "docker push ${REG_ADDRESS}/${BLUE_REPO}:${BUILD_NUMBER}"
+                sh "docker push ${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"
             }
         }
       }
@@ -68,7 +70,7 @@ pipeline{
             sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
             sh 'eksctl create cluster -f blue/main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml'
-            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${BLUE_REPO}:${BUILD_NUMBER}"]){
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"]){
 
               sleep 30
               sh 'kubectl get all --all-namespaces'
@@ -94,13 +96,18 @@ pipeline{
           environment {
              JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
           }
+
+          input {
+              message "Should we continue?"
+              ok "Yes, we should."
+              submitter "savan"
+            }
+
           steps{
-            script{
-              if (userInput['DEPLOY_GREEN'] == true){
-                sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
+                //sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
                 //sh 'eksctl create cluster -f green/main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml'
-                withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${GREEN_REPO}:${BUILD_NUMBER}"]){
+                withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${GREEN_REPO}:${GREEN_TAG}"]){
 
                   sleep 30
                   //sh 'kubectl get all --all-namespaces'
@@ -119,24 +126,20 @@ pipeline{
                   sh 'kubectl get svc'
                   sh 'kubectl describe services udacity-cap'
                   sh 'kubectl get pods --selector="app=udacity-cap-green" --output=wide'
-                  }
-                }
               }
             }
         }
     }
+    post {
+        success {
+            echo 'I have finished deploying the blue deployment and with user permission the green deployment'
+        }
+        aborted {
+            echo 'The build has succeeded until blue deployment. The user has aborted the green deployment'
+            echo 'Rebuild the pipeline and choose - Yes, we should - to deploy the green deployment'
+        }
+        failure{
+            echo ' The build has failed!'
+        }
+      }
 }
-
-def userInput() {
-  try {
-   timeout(time: 60, unit: 'SECONDS') {
-
-   userInput = input message: 'Deploy green service', parameters: [booleanParam(defaultValue: false, description: 'Ticking this box will do a deployment green service', name: 'DEPLOY_GREEN')]}
-  }
-  catch (err) {
-    def user = err.getCauses()[0].getUser()
-    echo "Aborted by:\n ${user}"
-    currentBuild.result = "SUCCESS"
-    return
-    }
-  }
