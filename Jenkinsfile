@@ -44,7 +44,7 @@ pipeline{
             #REPO="udacitycap"
 
             #Build container images using Dockerfile
-            docker build --no-cache -t ${params.BLUE_REPO}:${BUILD_NUMBER} .
+            docker build --no-cache -t ${BLUE_REPO}:${BUILD_NUMBER} .
             '''
         }
       }
@@ -54,9 +54,9 @@ pipeline{
 
             withDockerRegistry([url: "https://981422959347.dkr.ecr.us-west-2.amazonaws.com/udacitycap",credentialsId: "ecr:us-west-2:ecr-credentials"]){
 
-                sh "docker tag ${params.BLUE_REPO}:${BUILD_NUMBER} ${params.REG_ADDRESS}/${params.BLUE_REPO}:${params.BLUE_TAG}"
+                sh "docker tag ${BLUE_REPO}:${BUILD_NUMBER} ${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"
 
-                sh "docker push ${params.REG_ADDRESS}/${params.BLUE_REPO}:${params.BLUE_TAG}"
+                sh "docker push ${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"
             }
         }
       }
@@ -70,7 +70,7 @@ pipeline{
             sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
             sh 'eksctl create cluster -f blue/main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml'
-            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${params.REG_ADDRESS}/${params.BLUE_REPO}:${params.BLUE_TAG}"]){
+            withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${BLUE_REPO}:${BLUE_TAG}"]){
 
               sleep 30
               sh 'kubectl get all --all-namespaces'
@@ -107,7 +107,7 @@ pipeline{
                 //sh 'mkdir -p ${JENKINS_PATH}/kubeconfigs'
 
                 //sh 'eksctl create cluster -f green/main.yaml --kubeconfig=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml'
-                withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${params.REG_ADDRESS}/${params.GREEN_REPO}:${params.GREEN_TAG}"]){
+                withEnv(["KUBECONFIG=${JENKINS_PATH}/kubeconfigs/bluegreen-cluster-config.yaml", "IMAGE=${REG_ADDRESS}/${GREEN_REPO}:${GREEN_TAG}"]){
 
                   sleep 30
                   //sh 'kubectl get all --all-namespaces'
