@@ -78,7 +78,7 @@ pipeline{
 
               sh "sed -i '' 's|IMAGE|${IMAGE}|g' deploy.yaml"
 
-              sh "kubectl apply -f deploy.yaml"
+              sh "kubectl apply -f deploy.yaml --nodegroup=blue-workers"
 
               //cat app-deployment.yaml | sed "s/{{BITBUCKET_COMMIT}}/$BITBUCKET_COMMIT/g" | kubectl apply -f -
 
