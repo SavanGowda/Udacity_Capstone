@@ -55,7 +55,7 @@ def upload_file():
 					</style>
 					<div style="text-align:center;border:5px dashed white;background-color:green;">
 						<p></p>
-						<p style="color:white;font-size:40px;">Savan's Cat and Dog Machine Learning Model... Enjoy! :)</p>
+						<p style="color:white;font-size:40px;">Savan's Cat and Dog Machine Learning Green Model... Enjoy! :)</p>
 						<p></p>
 					</div>
 					<div style="text-align:center;border:5px dashed black;background-color:white;">
@@ -84,9 +84,9 @@ def upload_file():
 					box-sizing: border-box;
 				}
 			</style>
-			<div style="text-align:center;border:5px dashed white;background-color:#green;">
+			<div style="text-align:center;border:5px dashed white;background-color:green;">
 				<p></p>
-				<p style="color:white;font-size:40px;">Savan's Cat and Dog Machine Learning Model... Enjoy! :)</p>
+				<p style="color:white;font-size:40px;">Savan's Cat and Dog Machine Learning Green Model... Enjoy! :)</p>
 				<p></p>
 			</div>
 			<div style="text-align:center;border:5px dashed black;background-color:white;">
